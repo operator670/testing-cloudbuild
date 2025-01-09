@@ -7,8 +7,6 @@ steps:
       - '-t'
       - 'asia-south1-docker.pkg.dev/$_PROJECT_ID/my-repo/my-simple-web-image:latest'
       - '.'
-  options:
-    logging: CLOUD_LOGGING_ONLY
     # Explanation:
     # - This step uses the official Google Cloud builder image for Docker.
     # - It creates a simple docker image using the files in the repository.
@@ -21,6 +19,14 @@ steps:
     args:
       - 'push'
       - 'asia-south1-docker.pkg.dev/$_PROJECT_ID/my-repo/my-simple-web-image:latest'
+    # Explanation:
+    # - This step uses the official Google Cloud builder image for Docker.
+    # - It pushes the created image to artifact registry.
+    # - You need to enable the artifact registry API in your project
+    # - You need to replace $PROJECT_ID with your actual Google Cloud project ID.
+
+options:
+  logging: CLOUD_LOGGING_ONLY
     # Explanation:
     # - This step uses the official Google Cloud builder image for Docker.
     # - It pushes the created image to artifact registry.
