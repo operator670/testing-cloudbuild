@@ -7,6 +7,8 @@ steps:
       - '-t'
       - 'asia-south1-docker.pkg.dev/$_PROJECT_ID/my-repo/my-simple-web-image:latest'
       - '.'
+  options:
+    logging: CLOUD_LOGGING_ONLY
     # Explanation:
     # - This step uses the official Google Cloud builder image for Docker.
     # - It creates a simple docker image using the files in the repository.
