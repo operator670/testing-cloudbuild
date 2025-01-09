@@ -1,0 +1,49 @@
+steps:
+  # Step 1: Copy to Artifact Registry (Optional)
+  - name: 'gcr.io/cloud-builders/docker'
+    id: Copy_to_Artifact_Registry
+    args:
+      - 'build'
+      - '-t'
+      - 'asia-south1-docker.pkg.dev/$_PROJECT_ID/my-repo/my-simple-web-image:latest'
+      - '.'
+    # Explanation:
+    # - This step uses the official Google Cloud builder image for Docker.
+    # - It creates a simple docker image using the files in the repository.
+    # - This image is stored in artifact registry.
+    # - You need to enable the artifact registry API in your project
+    # - You need to replace $PROJECT_ID with your actual Google Cloud project ID.
+
+  - name: 'gcr.io/cloud-builders/docker'
+    id: Push_to_Artifact_Registry
+    args:
+      - 'push'
+      - 'asia-south1-docker.pkg.dev/$_PROJECT_ID/my-repo/my-simple-web-image:latest'
+    # Explanation:
+    # - This step uses the official Google Cloud builder image for Docker.
+    # - It pushes the created image to artifact registry.
+    # - You need to enable the artifact registry API in your project
+    # - You need to replace $PROJECT_ID with your actual Google Cloud project ID.
+
+artifacts:
+  objects:
+    location: '$_GCS_BUCKET_NAME'
+    paths:
+      - '**'
+    # Explanation:
+    # - The `artifacts` section specifies the files or directories that should
+    #   be uploaded to Google Cloud Storage after the build steps are complete.
+    # - `location: 'gs://$_GCS_BUCKET_NAME'` specifies the base GCS bucket where
+    #   the artifacts will be stored. The `$_GCS_BUCKET_NAME` is a substitution
+    #   variable that you define in Cloud Build trigger settings (in the options section).
+    # - `paths` is an array of file or directory patterns that will be included in
+    #   the upload. The double star "**" means all subfolders and files.
+  images:
+    - 'asia-south1-docker.pkg.dev/$_PROJECT_ID/my-repo/my-simple-web-image:latest'
+  # Explanation
+  # - This specifies the images that have been built in this build and should be saved in artifact registry
+
+
+  # Explanation
+  # - Defines substitution variables. In this case _GCS_BUCKET_NAME which is
+  #   used in the command to specify the GCS bucket name.
